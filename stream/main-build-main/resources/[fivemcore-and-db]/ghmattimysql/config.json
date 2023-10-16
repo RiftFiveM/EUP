@@ -1,0 +1,11 @@
+{
+    "user": "root",
+    "password": "",
+    "host": "localhost",
+    "port": 3306,
+    "database": "fvm",
+    "charset": "utf8mb4",
+	"connectTimeout": 240000,
+	"acquireTimeout": 240000,
+	"timeout": 240000
+}

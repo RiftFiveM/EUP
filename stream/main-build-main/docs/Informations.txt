@@ -1,0 +1,408 @@
+
+*-------------------------------------------------*
+                    NOTES
+*-------------------------------------------------*
+
+>>>>>>**MOST IMPORTANT THING**<<<<<<
+    For support, request invite to our discord server from website Live chat!
+    After connect to our discord, request access to our github and update your scripts from our github.
+    (just replace script folders if you didn't change anything)
+>>>>>>**MOST IMPORTANT THING**<<<<<<
+
+We highly recommend run your server on Dedicated or Virtual machine with Windows OS for best performance. (gamehosting like ZAP could cause some problems)
+Windows and Linux is supported, but server was mainly tested on Windows, if you want to use different OS you will have to figure out your way to make it work on other systems.
+Server was tested with 64 slots.
+
+If you didn't buy our police vehicles you have to add your own vehicle and edit the sellable vehicles in fvm-jobveshop config.
+If you buy our vehicle pack then you have to add these vehicles by yourself. We dont recommend to add all vehicles due to performance issues.
+
+
+Requirements for:
+    - custom clothing (like EUP) require FiveM Patreon (https://www.patreon.com/fivem READ BENEFITS)
+    - TokkoVOIP require only TeamSpeak 3 server
+    - more slots (onesync) require FiveM Patreon (https://www.patreon.com/fivem READ BENEFITS) 
+*----------------------------------------------------------------------------------------------------------------*
+
+
+
+IF YOU GOT FINISHED SETUP SCROLL DOWN - IF YOU GOT FINISHED SETUP SCROLL DOWN - IF YOU GOT FINISHED SETUP SCROLL DOWN - IF YOU GOT FINISHED SETUP SCROLL DOWN
+*-------------------------------------------------*
+                    SETUP
+*-------------------------------------------------*
+
+VPS/VDS Setup - this setup is for VPS/VDS with Windows only! (works also on selfhosted server on your PC)
+
+1. Download -> XAMPP, Visual Studio Code (or any text editor, for editing scripts), Firefox (or any browser with low RAM usage)
+2. Open port 30120 (TCP and UTP), there is tutorial how to do it -> https://www.firehousesoftware.com/webhelp/FH/Content/FHEnterprise/FHEnterpriseInstallationGuide/24_StaticPort.htm
+                                    (you can skip first 2 steps in that tutorial and just type into searchbar -> Windows Firewall with Advanced Security)
+3. Start installing all downloaded stuff from first step
+4. When installing XAMPP -> https://gyazo.com/fdc4a566ed8e2b5bc0fc4be8d3d1a0b7
+5. Run XAMPP, click on MYSQL, APACHE start buttons so your database will start (XAMPP must be always running with your server)
+
+
+Custom Server Installation (without addons)
+
+1. Download first and second part of server files from your our website
+2. Extract first part, put FXServer folder on desktop
+3. Put second part into "resources" folder
+4. Open server.cfg and change license key and steam web API key
+4. Create database called fvm
+    - open browser -> localhost/phpmyadmin (or some software that you use for database)
+    - click on NEW on left side -> https://gyazo.com/c15ffb11b6e80e9c5d2a236bf80c019c
+5. Import fvm sql to that database, then all remaining sqls
+    - click on fvm database
+    - Import button 
+    - Select fvm.sql and then other sqls (ignore all red text after importing them)
+6. Go to your server folder (FXServer) 
+    - find server.cfg and open it
+    - change license key and steam api key -> https://gyazo.com/9a24ab23668c70adca85cf5041f979d8
+    - if you don't know how to register them, uncle google will helps :]
+7. Again go to your server folder
+    - Go to FXServer/server and start FXServer.exe (it will open small window )
+    - Check this part of video https://youtu.be/rrmBI0dTnto?t=178
+    - Setup txAdmin (after setup it will start booting your server)
+    - Join your server via F8 console -> connect IPofYourVPS
+    - Have Fun
+
+
+Addons Installation - these are separate files to download it does NOT come with Custom Server parts by default!!! (if you don't have access to download them contact our support on website)
+
+Vehicle pack 200+
+    - put first part ( [vehicles] folder) into FXServer/resources
+    - open [vehicles] then open second part folder and put all folders from second part into [cars] folder
+    - go to your resources.cfg (FXServer) find -> #exec vehicles.cfg - and remove # so it will start all vehicles
+    - read NOTE!
+
+LSPD BCSO pack 
+    - open resources/[vehicles] 
+    - put [emergency] folder here and combine/replace them
+    - read NOTE!
+*-------------------------------------------------------------------------------------------------------------------------*
+
+
+
+        Informations about jobs/scripts/stuff
+*-------------------------------------------------*
+                BASIC INFORMATION
+*-------------------------------------------------*
+    - VOIP (pma-voice)
+        - Server using pma-voice module that handle whole mic communication in the game without using any external programs like teamspeak etc..
+            - If you want to adjust voice distances you can check pma-voice/shared.lua file
+            - https://github.com/AvarianKnight/pma-voice documentation of pma-voice and stuff around it
+        - for TokkoVOIP you must enable tokovoip option in fvm-phone cfg and turn off pma-voice in server.cfg and ensure fvm-radio in resources.cfg / server.cfg
+        - Server doesn't come with TokkoVOIP, just our scripts supports tokkovoip so you will have to find your way to install it. Should be easy, just read instructions from official creator of tokkovoip.
+    - Every character has his own Citizen ID 
+    - some scripts requires CitizenID for authorisation just check jobs configs 
+            - ex. script "police" in [fvm-scripts] has config.lua with Auth.Table where you must put your CitizenID for using "storm ram"
+            - or fvm-cityhall for DMV instructor
+            - NOTE! Not all tables are in config.lua, they could be server/client side scripts also...
+    
+    - Loading screen -> script/resource called "loadscreen" (located in [standalone]) there you can change background image and also discord url, open html file/folder to check it
+
+    fvm-core -> main script for important stuff
+        - config.lua -> There you can edit max weight, max inventory slots, discord link or turn on Whitelist/Maintenance mode
+            - note: if you change slots of your server, you must change it here on line 3 and also in fvm-scoreboard config
+        - shared.lua -> There you can find all added items/weapons/vehicles with settings (only some of them).
+            - FVMShared.Vehicles this table is for every vehicle you want to add into car dealer.
+                - In this table you can see each car with price,category,spawn name, trunk space, trunkslots, shop - pdm or custom
+                - NOTE! Also if you want delete some car from dealership you can do it here.
+            - FVMShared.VehicleModels second important table, same like FVMShared.Vehicles just will little change (check tutorial on discord)
+                - If you adding vehicle into shops or for sale, it must be added in this table also... 
+            - FVMShared.Jobs there is table of registered jobs, you can edit payments/grades/names here.
+            - FVMShared.Gangs all registered gangs, similar to Jobs table.
+    
+    - Almost every script has configuration file where you can setup almost everything, i recommend to go through all the script files.
+
+    - fvm-admin -> script for admin menu/stuff
+        - admin groups = admin/god
+    
+    - City Hall -> fvm-cityhall 
+        - if you want doing driving tests with players you must set your citizenID into server/main.lua -> starts line 4
+    
+    - Lap Races -> fvm-laprace 
+        - for making races you must set your citizenID in config.lua
+
+    - Justice -> fvm-justice 
+        - it's better to set judge first 
+        - so if you set someone as lawyer via command /setlawyer it will generates lawyer license (doesn't work with /setjob lawyer etc...)
+    
+    - fvm-logs -> this script is discord logger - change discord webhooks in config.lua - it has also categories
+    
+    - Gangs -> fvm-gangs 
+        - add/edit locations of stashes/garages/vehicles/colors in config.lua or let them be same
+        - every gang/family has already some interior interior for bossmenu (check boss/chief locations in fvm-core/shared.lua)
+    
+    - Garages -> fvm-garage
+        - SharedConfig.lua has all garages inside
+        - if you want to add another or change name of garage, you will find it right here
+        - you can add/edit depots also here
+    
+    - Multi Character -> fvm-multicharacter 
+        - you can change logo in index.html file on line 20 
+        - NOTE! make sure the link is for uploaded image, not whole website (ex. https://i.gyazo.com/2ea4171bea555699d1cd20047e690427.png)
+
+    - Trap Houses -> fvm-traphouses 
+        - For entering a trap house you need to be close to traphouse location (max 200meters far)
+        - then you need to rob NPCs around that location to get stickynote with code to enter it
+        - go close to traphouse doors and type /entertraphouse
+        - take over the traphouse, check config which items you can sell there, saleable items put into inventory in trap house and then hit button for sell..
+    
+    - Vehicle key system -> fvm-vehiclekeys
+        - https://gyazo.com/2ea4171bea555699d1cd20047e690427 = https://fivem.network/product/qbcore-vehicle-key-system/
+
+    - Meth Lab -> fvm-methlab 
+        - How get keys for laboratory 
+                - Start working for weapondealers, earn required reputation, go to Bogdan, he will ask you if you want to become Heisenberg, read instructions. Have fun.
+        - If you want to enter trap house without working, give yourself this item "labkey"
+        - open config.lua and teleport on location of methlab, then use key. 
+        - you need items to start cooking meth, complete some chemical deliveries to get them. (or find items in fvm-core shared.lua and give it to yourself via admin command)
+
+    - Housing System (fvm-houses, fvm-interior)
+        - The House Tiers
+            - Tier One (any decent home)  1 Bedroom, 1 Bath, Kitchen Living room, and Dining Room
+            - Tier Two (any decent home) 2 Bed Room, 1 Bath, Kitchen, Living room, and Dining Room
+            - Tier Three (Fancy house) 1 Master, 2 Bedroom, 3 Bath Living Room, Dining Room, and Kitchen
+            - Tier Four  (apartment only) 1 Bedroom, 1 Bath, Kitchen, and Small Living Room
+            - Tier Five  Trailer
+            - Tier Six (Luxury house)  1 Master, Sitting Area, Living Room, Dining Area, Sitting Area 2, and Kitchen
+            - Tier Seven (ghetto housing) 2 Bed Room, Living Room, and Kitchen
+            - note: it could be different after a lot of updates, written by LullsXO thankss
+
+    - Small Resources -> fvm-smallresources
+        - Discord settings
+            - how it looks -> https://cdn.discordapp.com/attachments/826576962729279520/851113188372250624/Capture1.JPG
+            - settings in cfg -> https://gyazo.com/848ae0b79efd6f62049de1f9d64735e1
+            - some explanation how it works https://forum.cfx.re/t/how-to-updated-discord-rich-presence-custom-image/157686
+        - List of blacklisted vehicles/skins
+
+    - Doorlocks (nui_doorlock)
+        - Server using doorlock script that allows you create new doorlocks in the game
+            - command /newdoor - set settings and follow the instructions
+
+    - Vehicle Shop (fvm-vehicleshop)
+        - Config file has options to create unlimited shops/showplaces etc
+        - We created two shops by default so you can understand how to add another shop easily.
+
+    - Vehicle Shop for Job vehicles (fvm-jobvehshop)
+        - We using ownership system so for example, cops have to buy their vehicles so they can store them in job garages or public garages if they want.
+        - You can create unlimited spots for any job that you want.
+        - Check out config file.
+    
+    - 
+        
+    
+
+*-------------------------------------------------*
+        HOW DO THE JOBS/ACTIONS WORKS?
+                idk jk lol
+*-------------------------------------------------*
+
+    - Drugs Dealers (fvm-drugs)
+        - drug dealers are loading from database (from table "dealers")
+        - there is already some dealers that are working or not working (like easter eggs)
+        - i recommend to delete whole dealers from database and create new ones via command /placedealer (check command list)
+        - dealers are based on time of game, so you cannot access them all the time (depends on time you set for dealer)
+        - they offering two options -> to buy or do mission
+        - if you want to buy something you need earn some reputation from these dealers by completing these missions. (/reputation)
+
+    - Weapon Dealers (fvm-criminalactions)
+        - it's almost the same like "drug dealers" with one big difference, they are not loading from database
+        - all dealers are loaded from config so check it out
+        - also it has some important items for robberies/heists
+    
+    - Houserobberies (fvm-criminalactions, fvm-houserobberies)
+        - Take objective to rob a house
+        - Available only at night
+        - Lot of things can be changed in config like house locations 
+    
+    - Weed (fvm-weed)
+        - check config for seed locations
+        - keep searching until you find some seed
+        - place seed on safe place
+        - take care of plant
+        - harvest it
+        - go to cornerselling location (beach, vinewood near to principal bank,,,, or check cornerselling locations at fvm-drugs cfg)
+        - open F1, find cornerselling 
+        - start selling dope
+    
+    - Cocaine (fvm-cokeruns)
+        - Find coords in fvm-cokeruns/erratic_coke_sv.lua -> hiddenprocess, hiddenstart
+        - Go to starting location, accept contract
+        - Follow waypoint
+        - Get gas from outside/inside of hangar, refuel plane
+        - Pickup delivery with plane
+        - Finish mission
+        - Go to hiddenprocess
+        - Prepare cocaine for selling to people/npcs
+    
+    - Corner Selling (fvm-drugs)
+        - thing for selling drugs
+        - config has all drugs for sell with prices from X to X
+        - option is located in F1 to turn it on/off
+
+    - Crafting (fvm-crafting)
+        - very important thing for criminals to start heists etc...
+        - you need to craft items to earn skill reputation to craft better items
+        - check config to edit reputation of items or required stuff to craft that item
+    
+    - House Robberies (fvm-houserobbery)
+        - You can rob houses only at night (21:00 to 4:00)
+        - Check config to change settings
+        - Go to houselocation to see what items are required to enter the house
+
+    - Store Robberies (fvm-storerobbery)
+        - you need advancedlockpick item
+        - go to close cash register and use item 
+        - there is small chance to get stickynote with code to open the safe
+    
+    - Scrapyard (fvm-scrapyard)
+        - you can scrap only selected vehicles
+        - request on scrapyard "Email List with vehicles" (coords/location should be at cfg)
+        - bring allowed vehicle (for ex. blista), scrap it, enjoy material
+        - material could be used at mechanics for vehicle repairs (you can make some RP interaction between them)
+    
+    - Recycling Center
+        - almost same like Scrapyard just without email list
+        - go on that location, start completing actions
+        - enjoy your material
+    
+    - Taxi
+        - take taxi car
+        - check F1 jobs menu
+        - turn on NPC missions and start completing them
+        - or pickup normal players with taximeter
+    
+    - Hotdog
+        - go to Chihuahua Hotdogs
+        - pick stall
+        - start making hotdogs 
+        - when you get enough
+        - turn on hotdog selling via F1 menu
+    
+    - Police
+        - Config 
+            - Option to add more spawnable objects/props
+                - First is argument, second object name, freeze true/false
+                - /pobject cone/barier/schotten/tent/light/delete = place/delete object 
+            - Add/edit unlimited locations locations
+                - for duty,stashes,armory,trash,impound,helicopter,fingerprints,evidence,stations
+            - Option to add cameras on certain spots
+            - About radars
+                - Commands
+                    - /flagplate plate reason = flag a vehicle 
+                    - /unflagplate = unflag a vehicle
+                    - /plateinfo = flag info about vehicle
+                - Flag any vehicle, if vehicle pass the radar cops will get notified
+            - Editable equipment in police trunks
+            - Editable equipment in armory spots
+
+        - Searching for evidence 
+            - Take flashlight
+            - Start aiming with flashlight to see markers around you
+            - bullets, blood, fingerprints
+            - take dna sample from player by command /takedna id
+            - take fingerprints on spots from cfg
+
+*-------------------------------------------------*
+              LIST OF FEATURES/JOBS
+*-------------------------------------------------*
+    List of jobs
+        Police
+        Ambulance
+        Doctor
+        Cardealer
+        Tow (trucker)
+        Trucker
+        Taxi
+        Realestate (agent)
+        Reporter
+        Judge
+        Lawyer
+        Cardealer
+        Mechanic
+        Garbage
+        Hotdog
+        Mining
+        Vanilla
+        Nightclub
+        Butcher
+        Gopostal
+        Security (money transfer)
+
+    Core of Framework
+    Anticheat
+    Detailed logs
+    Bossmenu
+    Gangs
+    Multicharacter
+    Housing system
+    Inventory
+    Hud
+    Weapon mechanics
+    Garages
+    Vehicle Shops
+    Radialmenu
+    Phone
+    Apartments
+    Storerobberies
+    Doorlocks
+    Casino
+    Blackjack
+    Weed growing
+    Cocaine missions
+    Meth
+    Weapon/Weed dealers
+    Shops
+    Lockpick minigame
+    Houserobberies
+    Street races
+    Tunerchip
+    Drugs sales
+    Jewellry heist
+    Bankrobberies
+    SmartWatch
+    Commandbinding system
+    Rental system
+    Afk kicker
+    Skillbar minigame
+    Pawnshop
+    Cityhall
+    Admin menu
+    Scorebaord
+    Boat shop
+    Traphouses
+    Scrapyard
+    Pinging system
+    Police badges
+    Skateboard
+    NPC spawner
+    Gym
+    Bag system
+    Vehicle menu
+    Moneywash
+    Push/flip your vehicle
+    Help window
+    Dice,rps game
+    Camping
+    Chair,bed system
+    Yoga
+    Billing
+    Vehicle wash
+    Trains
+    Tattooshop
+    Siren control
+    3dme command
+    Animations/emotes
+    Wounding system
+    Prison
+    Banking
+
+*-------------------------------------------------*
+    IT'S NOT FINISHED
+
+    NOTE: I only explained the things I thought needed to be explained.
+        If you missing some stuff, feel free to use #suggestions on discord.
+
+
+
+            
